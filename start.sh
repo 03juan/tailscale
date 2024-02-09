@@ -11,7 +11,5 @@ echo "Starting tailscale daemon"
 echo "Starting tailscale exit node"
 /app/tailscale up --authkey=${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname="fly-exit-eze"
 
-echo "Sleep forever"
-while true; do
-  sleep 3600
-done
+echo "Starting httpbin via gunicorn..."
+exec gunicorn -b "0.0.0.0:8080" "httpbin:app" -k "gevent"
