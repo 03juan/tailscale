@@ -4,7 +4,7 @@ FROM alpine:latest as production
 
 WORKDIR /app
 
-RUN apk update && apk add ca-certificates iptables ip6tables && rm -rf /var/cache/apk/*
+RUN apk update && apk add ca-certificates iptables ip6tables --no-cache
 
 RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
 # Copy Tailscale binaries from the tailscale image on Docker Hub.
