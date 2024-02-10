@@ -1,12 +1,10 @@
 FROM docker.io/tailscale/tailscale:stable as tailscale
 
-FROM kennethreitz/httpbin:latest as httpbin
+FROM alpine:latest
 
 WORKDIR /app
 
-RUN apt-get update \
-  && apt-get install -y ca-certificates iptables \
-  && rm -rf /var/lib/apt/lists/*_*
+RUN apk update && apk add ca-certificates iptables ip6tables --no-cache
 
 RUN mkdir -p /var/run/tailscale /var/cache/tailscale /var/lib/tailscale
 # Copy Tailscale binaries from the tailscale image on Docker Hub.
