@@ -8,8 +8,12 @@ sysctl -p /etc/sysctl.d/99-tailscale.conf
 echo "Starting tailscale daemon"
 /app/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/var/run/tailscale/tailscaled.sock &
 
-echo "Starting tailscale exit node"
-/app/tailscale up --authkey=${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname="fly-exit-eze"
+TAILSCALE_HOSTNAME="fly-exit-${FLY_REGION}"
 
-echo "Starting httpbin via gunicorn..."
-exec gunicorn -b "0.0.0.0:8080" "httpbin:app" -k "gevent"
+echo "Starting tailscale exit with hostname ${TAILSCALE_HOSTNAME}"
+/app/tailscale up --authkey=${TAILSCALE_AUTHKEY} --advertise-exit-node --hostname="${TAILSCALE_HOSTNAME}"
+
+echo "Sleep forever"
+while true; do
+  sleep 3600
+done
